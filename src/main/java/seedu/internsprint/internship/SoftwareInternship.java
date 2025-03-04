@@ -8,9 +8,13 @@ public class SoftwareInternship extends Internship {
         this.techStack = techStack;
     }
 
+    public void setTechStack(String techStack) {
+        this.techStack = techStack;
+    }
+
     @Override
     public String toString() {
-        return "Company: " + companyName + ", Role: " + role;
+        return "Company: " + companyName + ", Role: " + role+ ", Tech: " + techStack;
     }
 
     @Override

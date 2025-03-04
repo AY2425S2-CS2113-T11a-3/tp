@@ -8,9 +8,13 @@ public class HardwareInternship extends Internship {
         this.embeddedSystems = embeddedSystems;
     }
 
+    public void setEmbeddedSystems(String embeddedSystems) {
+        this.embeddedSystems = embeddedSystems;
+    }
+
     @Override
     public String toString() {
-        return "Company: " + companyName + ", Role: " + role;
+        return "Company: " + companyName + ", Role: " + role + ", Tech: " + embeddedSystems;
     }
 
     @Override

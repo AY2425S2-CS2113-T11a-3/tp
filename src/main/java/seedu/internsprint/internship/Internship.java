@@ -12,5 +12,13 @@ public abstract class Internship {
     @Override
     public abstract String toString();
 
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public abstract String getType();
 }

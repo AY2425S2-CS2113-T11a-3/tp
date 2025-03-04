@@ -38,7 +38,6 @@ public class InternSprint {
             } catch (Exception e) {
                 Ui.showError(e.getMessage());
             } finally {
-                Ui.showDivider();
                 System.out.println();
             }
         }

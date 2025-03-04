@@ -8,9 +8,13 @@ public class GeneralInternship extends Internship {
         this.department = department;
     }
 
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
-        return "Company: " + companyName + ", Role: " + role;
+        return "Company: " + companyName + ", Role: " + role + ", Dept: " + department;
     }
 
     @Override

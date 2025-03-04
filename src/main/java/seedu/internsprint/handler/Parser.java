@@ -1,10 +1,6 @@
 package seedu.internsprint.handler;
 
-import seedu.internsprint.command.AddGeneralCommand;
-import seedu.internsprint.command.AddHardwareCommand;
-import seedu.internsprint.command.AddSoftwareCommand;
-import seedu.internsprint.command.ByeCommand;
-import seedu.internsprint.command.Command;
+import seedu.internsprint.command.*;
 import seedu.internsprint.util.InternSprintExceptionMessages;
 
 import java.util.HashMap;
@@ -31,6 +27,9 @@ public class Parser {
         case "bye":
             command = new ByeCommand();
             break;
+        case "edit":
+            command = new EditCommand();
+            break;
         default:
             throw new IllegalArgumentException("Unknown command type: " + commandType);
         }
@@ -39,7 +38,7 @@ public class Parser {
     }
 
     private static String[] splitCommandTypeAndParams(String userInput) {
-        String[] multiWordCommands = {"add software", "add hardware", "add general"};
+        String[] multiWordCommands = {"add software", "add hardware", "add general", "edit"};
         for (String command : multiWordCommands) {
             if (userInput.startsWith(command)) {
                 return new String[]{command, userInput.substring(command.length()).trim()};
