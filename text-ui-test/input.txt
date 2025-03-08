@@ -1,2 +1,3 @@
 add software /c Google /r Software Developer /tech Python
+edit /index 1 /tech Python, AWS
 bye

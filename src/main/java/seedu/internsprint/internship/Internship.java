@@ -1,5 +1,7 @@
 package seedu.internsprint.internship;
 
+import org.json.JSONObject;
+
 public abstract class Internship {
     protected String companyName;
     protected String role;
@@ -11,6 +13,8 @@ public abstract class Internship {
 
     @Override
     public abstract String toString();
+
+    public abstract JSONObject toJson();
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;

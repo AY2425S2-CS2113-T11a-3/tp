@@ -1,14 +1,30 @@
 package seedu.internsprint.command;
 
-import seedu.internsprint.internship.*;
+import seedu.internsprint.internship.GeneralInternship;
+import seedu.internsprint.internship.HardwareInternship;
+import seedu.internsprint.internship.Internship;
+import seedu.internsprint.internship.InternshipList;
+import seedu.internsprint.internship.SoftwareInternship;
+import seedu.internsprint.util.InternSprintMessages;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static seedu.internsprint.util.InternSprintMessages.*;
+import static seedu.internsprint.util.InternSprintExceptionMessages.EDIT_INVALID_PARAMS;
+import static seedu.internsprint.util.InternSprintExceptionMessages.EDIT_UNABLE_TO_FIND_INTERNSHIP;
+import static seedu.internsprint.util.InternSprintMessages.EDIT_MESSAGE_SUCCESS;
 
 public class EditCommand extends Command {
-    public static final String[] OPTIONAL_PARAMETERS = {"/c", "/r", "/dept", "/eli", "/ex", "/tech", "/desc", "/hardtech"};
-
+    public static final String COMMAND_WORD = "edit";
+    public static final String MESSAGE_USAGE = "    " + COMMAND_WORD + ": Edits the parameters of an internship.\n"
+        + "     Parameters: " + "/c COMPANY_NAME /r ROLE /ex EXPECTATIONS /eli ELIGIBILITY\n"
+        + "     /dept DEPARTMENT /hardtech HARDWARE TECHNOLOGIES /desc DESCRIPTION /tech TECHNOLOGIES\n"
+        + "     Example: " + COMMAND_WORD + " /index 1 /c Google /r Hardware Engineer /tech C, C++";
+    public static final String[] OPTIONAL_PARAMETERS = {"/c", "/r", "/dept", "/eli",
+        "/ex", "/tech", "/desc", "/hardtech"};
 
     @Override
     protected boolean isValidParameters() {
@@ -27,11 +43,15 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(InternshipList internships) {
         CommandResult result;
+        List<String> feedback = new ArrayList<>();
         if (!isValidParameters()) {
-            result = new CommandResult(invalidParamsMessage());
+            feedback.add(EDIT_INVALID_PARAMS);
+            feedback.add(MESSAGE_USAGE);
+            result = new CommandResult(feedback);
             result.setSuccessful(false);
             return result;
         }
+
         Internship foundInternship = null;
         HashMap<String, ArrayList<Internship>> internshipMap = internships.getInternshipMap();
         int index = Integer.parseInt(parameters.get("/index")) - 1;
@@ -68,30 +88,25 @@ public class EditCommand extends Command {
         }
 
         if (foundInternship == null || wrongTypeOfInternship) {
-            result = new CommandResult(cannotFindInternship());
+            result = new CommandResult(EDIT_UNABLE_TO_FIND_INTERNSHIP);
             result.setSuccessful(false);
             return result;
         }
-        List<String> feedback = new ArrayList<>();
+
+        try {
+            internships.saveInternships();
+            feedback.add(InternSprintMessages.SAVE_SUCCESS_MESSAGE);
+        } catch (Exception e) {
+            feedback.add(e.getMessage());
+            result = new CommandResult(feedback);
+            result.setSuccessful(false);
+            return result;
+        }
+
         feedback.add(EDIT_MESSAGE_SUCCESS);
         feedback.add(foundInternship.toString());
         result = new CommandResult(feedback);
         result.setSuccessful(true);
         return result;
-    }
-
-
-    protected String invalidParamsMessage() {
-        return ("""
-                    You have not entered a valid parameter to edit. The edit command works for the following optional parameters:
-                Parameters: /c COMPANY_NAME /r ROLE /ex EXPECTATIONS /eli ELIGIBILITY\
-                /dept DEPARTMENT /hardtech HARDWARE TECHNOLOGIES /desc DESCRIPTION /tech TECHNOLOGIES
-                Example:  /c Google /r Hardware Engineer /tech C, C++""");
-    }
-
-    protected String cannotFindInternship() {
-        return ("""
-                     This internship is not found within your saved list. Check that /index is provided with a valid
-                 index reference, or that the type of internship you are editing contains that type of flag""");
     }
 }

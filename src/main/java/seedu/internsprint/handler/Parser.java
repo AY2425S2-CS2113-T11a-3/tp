@@ -1,11 +1,18 @@
 package seedu.internsprint.handler;
 
-import seedu.internsprint.command.*;
-import seedu.internsprint.util.InternSprintExceptionMessages;
+import seedu.internsprint.command.AddGeneralCommand;
+import seedu.internsprint.command.AddHardwareCommand;
+import seedu.internsprint.command.AddSoftwareCommand;
+import seedu.internsprint.command.ByeCommand;
+import seedu.internsprint.command.Command;
+import seedu.internsprint.command.EditCommand;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static seedu.internsprint.util.InternSprintExceptionMessages.ILLEGAL_COMMAND_INPUT;
+import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_COMMAND_INPUT;
 
 public class Parser {
     public static Command parseCommand(String userInput) {
@@ -77,7 +84,7 @@ public class Parser {
             String key = matcher.group(1).trim();
             String value = matcher.group(2).trim();
             if (value.contains("/")) {
-                throw new IllegalArgumentException(InternSprintExceptionMessages.ILLEGAL_COMMAND_INPUT);
+                throw new IllegalArgumentException(ILLEGAL_COMMAND_INPUT);
             }
             keyValueMap.put(key, value);
         }
@@ -85,7 +92,7 @@ public class Parser {
         String unmatched = matcher.replaceAll("").trim();
         if (!unmatched.isEmpty()) {
             throw new IllegalArgumentException(
-                    String.format(InternSprintExceptionMessages.MISSING_COMMAND_INPUT, unmatched));
+                    String.format(MISSING_COMMAND_INPUT, unmatched));
         }
 
         command.setParameters(keyValueMap);

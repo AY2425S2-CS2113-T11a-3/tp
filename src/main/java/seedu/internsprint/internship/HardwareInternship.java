@@ -1,5 +1,10 @@
 package seedu.internsprint.internship;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
+
 public class HardwareInternship extends Internship {
     private String embeddedSystems;
 
@@ -15,6 +20,16 @@ public class HardwareInternship extends Internship {
     @Override
     public String toString() {
         return "Company: " + companyName + ", Role: " + role + ", Tech: " + embeddedSystems;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        Map<String, Object> orderedMap = new LinkedHashMap<>();
+        orderedMap.put("type", "hardware");
+        orderedMap.put("companyName", companyName);
+        orderedMap.put("role", role);
+        orderedMap.put("embeddedSystems", embeddedSystems);
+        return new JSONObject(orderedMap);
     }
 
     @Override

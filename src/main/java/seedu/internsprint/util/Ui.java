@@ -2,9 +2,11 @@ package seedu.internsprint.util;
 
 import seedu.internsprint.command.CommandResult;
 
+import java.util.List;
 import java.util.Scanner;
 
-import static seedu.internsprint.util.InternSprintMessages.*;
+import static seedu.internsprint.util.InternSprintMessages.LOGO;
+import static seedu.internsprint.util.InternSprintMessages.WELCOME_MESSAGE;
 
 public class Ui {
     private static final int DASH_LINE_WIDTH = 120;
@@ -31,20 +33,26 @@ public class Ui {
     }
 
     public static void showError(String message) {
-        System.out.println("    "+ERROR_PREFIX +message);
+        System.out.println("    " + ERROR_PREFIX + message);
         System.out.println(DIVIDER);
+    }
 
+    public static void showError(List<String> messages) {
+        System.out.println("    " + ERROR_PREFIX + messages.get(0));
+        for (int i = 1; i < messages.size(); i++) {
+            System.out.println(messages.get(i));
+        }
     }
 
     public static void showResultToUser(CommandResult result) {
         System.out.println(DIVIDER);
         if (result.isSuccessful()) {
             for (String feedback : result.getFeedbackToUser()) {
-                System.out.println("    "+feedback);
+                System.out.println("    " + feedback);
             }
             System.out.println(DIVIDER);
         } else {
-            showError(result.getFeedbackToUser().get(0));
+            showError(result.getFeedbackToUser());
         }
 
 

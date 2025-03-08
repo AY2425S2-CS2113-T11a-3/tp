@@ -1,13 +1,35 @@
-===================================================
-Welcome to InternSprint!
-===================================================
+------------------------------------------------------------------------------------------------------------------------
+InternSprint
+Welcome to InternSprint! Your one-stop platform to manage and track your internship applications.
+Get started by adding an internship! InternSprint allows you to add three types of internships:
+- General
+- Software
+- Hardware
 
-> New internship added
-Company: Google, Role: Software Developer
-Now you have 1 internships in the list
-===================================================
+To begin, use one of the following commands to learn the correct syntax:
+  add general
+  add software
+  add hardware
+------------------------------------------------------------------------------------------------------------------------
 
-> Goodbye! Hope to see you again soon!
-===================================================
+> ------------------------------------------------------------------------------------------------------------------------
+    New internship added
+    Company: Google, Role: Software Developer, Tech: Python
+    Now you have 1 internships in the list
+    Internships saved successfully
+    You can view the list of internships at data/internships.txt
+------------------------------------------------------------------------------------------------------------------------
 
-Goodbye! Hope to see you again soon!
+> ------------------------------------------------------------------------------------------------------------------------
+    Internships saved successfully
+    You can view the list of internships at data/internships.txt
+    Internship edited successfully.
+    Company: Google, Role: Software Developer, Tech: Python, AWS
+------------------------------------------------------------------------------------------------------------------------
+
+> ------------------------------------------------------------------------------------------------------------------------
+    Internships saved successfully
+    You can view the list of internships at data/internships.txt
+    Goodbye! Hope to see you again soon!
+------------------------------------------------------------------------------------------------------------------------
+
