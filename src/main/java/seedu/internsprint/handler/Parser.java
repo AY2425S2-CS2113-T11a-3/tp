@@ -7,12 +7,11 @@ import seedu.internsprint.command.ByeCommand;
 import seedu.internsprint.command.Command;
 import seedu.internsprint.command.EditCommand;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static seedu.internsprint.util.InternSprintExceptionMessages.ILLEGAL_COMMAND_INPUT;
-import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_COMMAND_INPUT;
+import static seedu.internsprint.util.InternSprintExceptionMessages.ILLEGAL_VALUE_INPUT;
+import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_VALUE_INPUT;
 
 public class Parser {
     public static Command parseCommand(String userInput) {
@@ -58,41 +57,39 @@ public class Parser {
         return new String[]{commandType, params};
     }
 
-    private static void parseKeyValuePairs(String params, Command command) {
+    protected static void parseKeyValuePairs(String params, Command command) {
         HashMap<String, String> keyValueMap = new HashMap<>();
 
         if (params.isEmpty()) {
             return;
         }
 
-        String[] parts = params.trim().split("/", 2);
-        String description = parts[0].trim();
-        if (!description.isEmpty()) {
-            keyValueMap.put("description", description);
-        }
-        if (parts.length == 1) {
-            command.setParameters(keyValueMap);
-            return;
+        String[] parts = params.trim().split("(?=\\s*/[a-zA-Z]+)");
+        if (!parts[0].trim().startsWith("/")) {
+            keyValueMap.put("description", parts[0].trim());
+            if (parts.length == 1) {
+                command.setParameters(keyValueMap);
+                return;
+            }
+            parts = Arrays.copyOfRange(parts, 1, parts.length);
         }
 
-        String keyValuePart = "/" + parts[1];
-        String regex = "(/\\w+)\\s+(.*?)(?=\\s+/|$)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(keyValuePart);
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].trim().isEmpty()) {
+                continue;
+            }
+            String[] keyValue = parts[i].trim().split("\\s+", 2);
+            if (keyValue.length < 2) {
+                throw new IllegalArgumentException(String.format(MISSING_VALUE_INPUT, keyValue[0]));
+            }
 
-        while (matcher.find()) {
-            String key = matcher.group(1).trim();
-            String value = matcher.group(2).trim();
+            String key = keyValue[0].trim();
+            String value = keyValue[1].trim();
+
             if (value.contains("/")) {
-                throw new IllegalArgumentException(ILLEGAL_COMMAND_INPUT);
+                throw new IllegalArgumentException(ILLEGAL_VALUE_INPUT);
             }
             keyValueMap.put(key, value);
-        }
-
-        String unmatched = matcher.replaceAll("").trim();
-        if (!unmatched.isEmpty()) {
-            throw new IllegalArgumentException(
-                    String.format(MISSING_COMMAND_INPUT, unmatched));
         }
 
         command.setParameters(keyValueMap);

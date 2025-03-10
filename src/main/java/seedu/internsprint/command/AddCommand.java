@@ -36,7 +36,14 @@ public abstract class AddCommand extends Command {
             return result;
         }
 
-        Internship toAdd = createInternship();
+        Internship toAdd;
+        try {
+            toAdd = createInternship();
+        } catch (Exception e) {
+            result = new CommandResult(e.getMessage());
+            result.setSuccessful(false);
+            return result;
+        }
 
         if (internships.contains(toAdd)) {
             result = new CommandResult(MESSAGE_DUPLICATE_INTERNSHIP);

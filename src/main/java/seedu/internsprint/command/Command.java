@@ -12,6 +12,10 @@ public abstract class Command {
         this.parameters = parameters;
     }
 
+    public HashMap<String, String> getParameters() {
+        return parameters;
+    }
+
     protected abstract boolean isValidParameters();
 
     public abstract CommandResult execute(InternshipList internships);
