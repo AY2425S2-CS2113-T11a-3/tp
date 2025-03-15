@@ -17,6 +17,14 @@ public class HardwareInternship extends Internship {
         }
         this.embeddedSystems = embeddedSystems;
     }
+    public HardwareInternship(String companyName, String role, String embeddedSystems, String eligibility,
+                             String description, String status, String expectations) {
+        super(companyName, role, eligibility,description,status,expectations);
+        if (embeddedSystems == null || embeddedSystems.isBlank()) {
+            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/tech"));
+        }
+        this.embeddedSystems = embeddedSystems;
+    }
 
     public void setEmbeddedSystems(String embeddedSystems) {
         this.embeddedSystems = embeddedSystems;
@@ -24,7 +32,20 @@ public class HardwareInternship extends Internship {
 
     @Override
     public String toString() {
-        return "Company: " + companyName + ", Role: " + role + ", Tech: " + embeddedSystems;
+        String internshipString =   "Company: " + companyName + ", Role: " + role + ", Tech: " + embeddedSystems;
+        if (eligibility != null && !eligibility.isBlank()) {
+            internshipString += ", Eligibility: "+eligibility;
+        }
+        if (description != null && !description.isBlank()) {
+            internshipString += ", Description: "+description;
+        }
+        if (status != null && !status.isBlank()) {
+            internshipString += ", Status: "+status;
+        }
+        if (expectations != null && !expectations.isBlank()) {
+            internshipString += ", Expectations: "+expectations;
+        }
+        return internshipString;
     }
 
     @Override

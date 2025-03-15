@@ -14,9 +14,11 @@ import static seedu.internsprint.util.InternSprintMessages.LIST_COUNT_MESSAGE;
 
 public abstract class AddCommand extends Command {
     protected final Set<String> requiredParameters;
+    protected final Set<String> optionalParameters;
 
-    public AddCommand(Set<String> requiredParameters) {
+    public AddCommand(Set<String> requiredParameters, Set<String> optionalParameters) {
         this.requiredParameters = requiredParameters;
+        this.optionalParameters = optionalParameters;
     }
 
     protected boolean isValidParameters() {

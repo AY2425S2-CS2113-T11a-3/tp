@@ -18,13 +18,35 @@ public class SoftwareInternship extends Internship {
         this.techStack = techStack;
     }
 
+    public SoftwareInternship(String companyName, String role, String techStack, String eligibility,
+                             String description, String status, String expectations) {
+        super(companyName, role, eligibility,description,status,expectations);
+        if (techStack == null || techStack.isBlank()) {
+            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/tech"));
+        }
+        this.techStack = techStack;
+    }
+
     public void setTechStack(String techStack) {
         this.techStack = techStack;
     }
 
     @Override
     public String toString() {
-        return "Company: " + companyName + ", Role: " + role+ ", Tech: " + techStack;
+        String internshipString =   "Company: " + companyName + ", Role: " + role+ ", Tech: " + techStack;
+        if (eligibility != null && !eligibility.isBlank()) {
+            internshipString += ", Eligibility: "+eligibility;
+        }
+        if (description != null && !description.isBlank()) {
+            internshipString += ", Description: "+description;
+        }
+        if (status != null && !status.isBlank()) {
+            internshipString += ", Status: "+status;
+        }
+        if (expectations != null && !expectations.isBlank()) {
+            internshipString += ", Expectations: "+expectations;
+        }
+        return internshipString;
     }
 
     @Override

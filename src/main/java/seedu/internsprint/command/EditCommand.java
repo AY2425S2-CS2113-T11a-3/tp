@@ -23,7 +23,7 @@ public class EditCommand extends Command {
             + "     Parameters: " + "/c COMPANY_NAME /r ROLE /ex EXPECTATIONS /eli ELIGIBILITY\n"
             + "     /dept DEPARTMENT /hardtech HARDWARE TECHNOLOGIES /desc DESCRIPTION /tech TECHNOLOGIES\n"
             + "     Example: " + COMMAND_WORD + " /index 1 /c Google /r Hardware Engineer /tech C, C++";
-    public static final String[] OPTIONAL_PARAMETERS = {"/c", "/r", "/dept", "/eli",
+    public static final String[] POSSIBLE_PARAMETERS = {"/c", "/r", "/dept", "/eli",
         "/ex", "/tech", "/desc", "/hardtech"};
 
     @Override
@@ -32,7 +32,7 @@ public class EditCommand extends Command {
             return false;
         }
         for (String key : parameters.keySet()) {
-            if (!key.equals("/index") && !Arrays.asList(OPTIONAL_PARAMETERS).contains(key)) {
+            if (!key.equals("/index") && !Arrays.asList(POSSIBLE_PARAMETERS).contains(key)) {
                 System.out.println("Invalid key found: " + key);
                 return false;
             }
@@ -55,39 +55,19 @@ public class EditCommand extends Command {
         Internship foundInternship = null;
         HashMap<String, ArrayList<Internship>> internshipMap = internships.getInternshipMap();
         int index = Integer.parseInt(parameters.get("/index")) - 1;
-        boolean wrongTypeOfInternship = false;
+        boolean checkWrongTypeOfInternship = false;
 
         for (Map.Entry<String, ArrayList<Internship>> entry : internshipMap.entrySet()) {
             ArrayList<Internship> oneTypeInternships = entry.getValue();
             if (index >= 0 && index < oneTypeInternships.size()) {
                 foundInternship = oneTypeInternships.get(index); // Found the internship
-
-                if (parameters.containsKey("/c")) {
-                    foundInternship.setCompanyName(parameters.get("/c"));
-                }
-                if (parameters.containsKey("/r")) {
-                    foundInternship.setRole(parameters.get("/r"));
-                }
-                if (parameters.containsKey("/dept") && foundInternship instanceof GeneralInternship) {
-                    ((GeneralInternship) foundInternship).setDepartment(parameters.get("/dept"));
-                } else if (parameters.containsKey("/dept") && !(foundInternship instanceof GeneralInternship)) {
-                    wrongTypeOfInternship = true;
-                }
-                if (parameters.containsKey("/tech") && foundInternship instanceof SoftwareInternship) {
-                    ((SoftwareInternship) foundInternship).setTechStack(parameters.get("/tech"));
-                } else if (parameters.containsKey("/tech") && !(foundInternship instanceof SoftwareInternship)) {
-                    wrongTypeOfInternship = true;
-                }
-                if (parameters.containsKey("/hardtech") && foundInternship instanceof HardwareInternship) {
-                    ((HardwareInternship) foundInternship).setEmbeddedSystems(parameters.get("/hardtech"));
-                } else if (parameters.containsKey("/hardtech") && !(foundInternship instanceof HardwareInternship)) {
-                    wrongTypeOfInternship = true;
-                }
+                checkWrongTypeOfInternship = editParametersForFoundInternships(foundInternship,
+                                                                                checkWrongTypeOfInternship);
             }
             index -= oneTypeInternships.size();
         }
 
-        if (foundInternship == null || wrongTypeOfInternship) {
+        if (foundInternship == null || checkWrongTypeOfInternship) {
             result = new CommandResult(EDIT_UNABLE_TO_FIND_INTERNSHIP);
             result.setSuccessful(false);
             return result;
@@ -102,11 +82,44 @@ public class EditCommand extends Command {
             result.setSuccessful(false);
             return result;
         }
-
         feedback.add(EDIT_MESSAGE_SUCCESS);
         feedback.add(foundInternship.toString());
         result = new CommandResult(feedback);
         result.setSuccessful(true);
         return result;
+    }
+
+    private boolean editParametersForFoundInternships(Internship foundInternship, boolean checkWrongTypeOfInternship) {
+        if (parameters.containsKey("/c")) {
+            foundInternship.setCompanyName(parameters.get("/c"));
+        }
+        if (parameters.containsKey("/r")) {
+            foundInternship.setRole(parameters.get("/r"));
+        }
+        if (parameters.containsKey("/dept") && foundInternship.getType().equals("general")) {
+            ((GeneralInternship) foundInternship).setDepartment(parameters.get("/dept"));
+        } else if (parameters.containsKey("/dept") && !(foundInternship.getType().equals("general"))) {
+            checkWrongTypeOfInternship = true;
+        }
+        if (parameters.containsKey("/tech") && foundInternship.getType().equals("software")) {
+            ((SoftwareInternship) foundInternship).setTechStack(parameters.get("/tech"));
+        } else if (parameters.containsKey("/tech") && !(foundInternship.getType().equals("software"))) {
+            checkWrongTypeOfInternship = true;
+        }
+        if (parameters.containsKey("/hardtech") && foundInternship.getType().equals("hardware")) {
+            ((HardwareInternship) foundInternship).setEmbeddedSystems(parameters.get("/hardtech"));
+        } else if (parameters.containsKey("/hardtech") && !(foundInternship.getType().equals("hardware"))) {
+            checkWrongTypeOfInternship = true;
+        }
+        if (parameters.containsKey("/eli")) {
+            foundInternship.setEligibility(parameters.get("/eli"));
+        }
+        if (parameters.containsKey("/desc")) {
+            foundInternship.setDescription(parameters.get("/desc"));
+        }
+        if (parameters.containsKey("/ex")) {
+            foundInternship.setExpectations(parameters.get("/ex"));
+        }
+        return checkWrongTypeOfInternship;
     }
 }

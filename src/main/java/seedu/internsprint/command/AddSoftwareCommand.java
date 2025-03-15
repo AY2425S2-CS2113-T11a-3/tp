@@ -11,9 +11,10 @@ public class AddSoftwareCommand extends AddCommand {
             + "    Parameters: " + "/c COMPANY_NAME " + "/r ROLE " + "/tech TECHNOLOGIES\n"
             + "    Example: " + COMMAND_WORD + " /c Google " + "/r Software Engineer " + "/tech Java, Python";
     public static final String[] REQUIRED_PARAMETERS = {"/c", "/r", "/tech"};
+    public static final String[] OPTIONAL_PARAMETERS = {"/eli", "/ex", "/status","/desc"};
 
     public AddSoftwareCommand() {
-        super(Set.of(REQUIRED_PARAMETERS));
+        super(Set.of(REQUIRED_PARAMETERS), Set.of(OPTIONAL_PARAMETERS));
     }
 
     @Override
@@ -23,6 +24,22 @@ public class AddSoftwareCommand extends AddCommand {
 
     @Override
     protected Internship createInternship() {
-        return new SoftwareInternship(parameters.get("/c"), parameters.get("/r"), parameters.get("/tech"));
+        String companyName = parameters.get("/c");
+        String role = parameters.get("/r");
+        String techstack = parameters.get("/tech");
+        String eligibility = parameters.get("/eli");  //this will return null if user doesn't provide the same
+        String description = parameters.get("/desc");
+        String status = parameters.get("/status");
+        String expectations = parameters.get("/ex");
+
+        return new SoftwareInternship(
+                companyName,
+                role,
+                techstack,
+                eligibility != null ? eligibility : "",
+                description != null ? description : "",
+                status != null ? status : "",
+                expectations != null ? expectations : ""
+        );
     }
 }
