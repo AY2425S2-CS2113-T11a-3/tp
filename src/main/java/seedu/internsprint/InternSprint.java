@@ -5,6 +5,7 @@ import seedu.internsprint.command.CommandResult;
 import seedu.internsprint.handler.Parser;
 import seedu.internsprint.handler.StorageHandler;
 import seedu.internsprint.internship.InternshipList;
+import seedu.internsprint.util.InternSprintLogger;
 import seedu.internsprint.util.Ui;
 
 import java.util.logging.Logger;
@@ -27,6 +28,8 @@ public class InternSprint {
      */
     public static void main(String[] args) {
         //Logger.getLogger("").setLevel(Level.OFF);
+        // Set up centralized logger configuration at startup.
+        InternSprintLogger.setUpLogger();
         new InternSprint().run();
     }
 
