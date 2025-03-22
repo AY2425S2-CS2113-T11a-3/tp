@@ -2,7 +2,7 @@ package seedu.internsprint;
 
 import seedu.internsprint.command.Command;
 import seedu.internsprint.command.CommandResult;
-import seedu.internsprint.handler.Parser;
+import seedu.internsprint.handler.CommandParser;
 import seedu.internsprint.handler.StorageHandler;
 import seedu.internsprint.internship.InternshipList;
 import seedu.internsprint.util.Ui;
@@ -26,7 +26,7 @@ public class InternSprint {
      * Main entry-point for the InternSprint application.
      */
     public static void main(String[] args) {
-        //Logger.getLogger("").setLevel(Level.OFF);
+        Logger.getLogger("").setLevel(Level.OFF);
         new InternSprint().run();
     }
 
@@ -55,7 +55,7 @@ public class InternSprint {
                 String userCommand = Ui.getUserCommand();
                 logger.log(Level.INFO, "User command: " + userCommand);
 
-                Command command = Parser.parseCommand(userCommand);
+                Command command = CommandParser.parseCommand(userCommand);
                 logger.log(Level.INFO, "Parsed Command: " + command);
 
                 result = command.execute(internships);

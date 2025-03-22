@@ -6,6 +6,10 @@ public class InternSprintExceptionMessages {
     public static final String MISSING_VALUE_INPUT = "Invalid input: key %s found with no value.";
     public static final String MISSING_REQUIRED_PARAMETERS = "Missing required parameters: %s";
 
+    public static final String INVALID_DATE_FORMAT = "Invalid date format or no date found";
+    public static final String PARTIAL_DATE_FORMAT = "Some input words is not recognized as a date. \n"
+        + "    Date interpreted is: %s. Please give a better format.";
+
     public static final String UNABLE_TO_CREATE_DIRECTORY = "Unable to create directory: %s";
     public static final String FILE_ALREADY_EXISTS = "File already exists: %s";
     public static final String UNABLE_TO_CREATE_FILE = "Unable to create file: %s";

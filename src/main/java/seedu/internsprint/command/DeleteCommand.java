@@ -1,6 +1,6 @@
 package seedu.internsprint.command;
 
-import seedu.internsprint.handler.Parser;
+import seedu.internsprint.handler.CommandParser;
 import seedu.internsprint.internship.Internship;
 import seedu.internsprint.internship.InternshipList;
 import seedu.internsprint.util.InternSprintMessages;
@@ -47,7 +47,7 @@ public class DeleteCommand extends Command {
 
         String[] validIndex;
         try {
-            validIndex = Parser.validateIndex(parameters.get("/index"), internships);
+            validIndex = CommandParser.validateIndex(parameters.get("/index"), internships);
             assert validIndex.length == 2 : "Parser.validateIndex should return a valid type and index";
         } catch (IllegalArgumentException e) {
             feedback.add(e.getMessage());

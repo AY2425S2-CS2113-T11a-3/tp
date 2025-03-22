@@ -29,8 +29,8 @@ import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_VALU
 /**
  * Parses user input.
  */
-public class Parser {
-    private static Logger logger = Logger.getLogger(Parser.class.getName());
+public class CommandParser {
+    private static Logger logger = Logger.getLogger(CommandParser.class.getName());
 
     /**
      * Parses the user input and returns the corresponding Command object.

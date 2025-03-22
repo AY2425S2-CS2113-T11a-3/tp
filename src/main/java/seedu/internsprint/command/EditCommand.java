@@ -1,6 +1,6 @@
 package seedu.internsprint.command;
 
-import seedu.internsprint.handler.Parser;
+import seedu.internsprint.handler.CommandParser;
 import seedu.internsprint.internship.GeneralInternship;
 import seedu.internsprint.internship.HardwareInternship;
 import seedu.internsprint.internship.Internship;
@@ -70,7 +70,7 @@ public class EditCommand extends Command {
 
         String[] validIndex;
         try {
-            validIndex = Parser.validateIndex(parameters.get("/index"), internships);
+            validIndex = CommandParser.validateIndex(parameters.get("/index"), internships);
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, "Index for edit command out of range...");
             feedback.add(e.getMessage());
