@@ -16,6 +16,12 @@ import seedu.internsprint.command.Command;
 import seedu.internsprint.internship.Internship;
 import seedu.internsprint.internship.InternshipList;
 import seedu.internsprint.command.FindCommand;
+import seedu.internsprint.command.ProjectGeneralCommand;
+import seedu.internsprint.command.ProjectHardwareCommand;
+import seedu.internsprint.command.ProjectSoftwareCommand;
+import seedu.internsprint.command.ViewHardwareProjectsCommand;
+import seedu.internsprint.command.ViewSoftwareProjectsCommand;
+import seedu.internsprint.command.ViewGeneralProjectsCommand;
 
 import seedu.internsprint.util.InternSprintLogger;
 
@@ -93,8 +99,26 @@ public class CommandParser {
         case "my":
             command = new UserProfileCommand();
             break;
-        case "view":
+        case "view user":
             command = new ViewUserCommand();
+            break;
+        case "project general":
+            command = new ProjectGeneralCommand();
+            break;
+        case "view general":
+            command = new ViewGeneralProjectsCommand();
+            break;
+        case "view software":
+            command = new ViewSoftwareProjectsCommand();
+            break;
+        case "view hardware":
+            command = new ViewHardwareProjectsCommand();
+            break;
+        case "project software":
+            command = new ProjectSoftwareCommand();
+            break;
+        case "project hardware":
+            command = new ProjectHardwareCommand();
             break;
         default:
             throw new IllegalArgumentException(String.format(INVALID_COMMAND_TYPE, commandType));
@@ -110,7 +134,9 @@ public class CommandParser {
      * @return Array containing the command type and the parameters.
      */
     private static String[] splitCommandTypeAndParams(String userInput) {
-        String[] flagCommands = {"add software", "add hardware", "add general", "edit","my"};
+        String[] flagCommands = {"add software", "add hardware", "add general", "edit","my","project general",
+            "project software","project hardware", "view software", "view hardware","view general",
+            "view user"};
         for (String command : flagCommands) {
             if (userInput.startsWith(command)) {
                 return new String[]{command, userInput.substring(command.length()).trim()};

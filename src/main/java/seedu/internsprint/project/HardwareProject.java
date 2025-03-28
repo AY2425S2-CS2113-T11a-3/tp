@@ -5,8 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import de.vandermeer.asciitable.AsciiTable;
 import org.json.JSONObject;
+
 import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_REQUIRED_PARAMETERS;
 
 /**
@@ -15,51 +17,43 @@ import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_REQU
 public class HardwareProject extends Project {
     private List<String> hardwareComponents;
 
-    public HardwareProject(String projectName, String role, List<String> hardwareComponents) {
-        super(projectName, role);
-        if (hardwareComponents == null || hardwareComponents.isEmpty()) {
-            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/tech"));
-        }
-        for (String component : hardwareComponents) {
-            if (component == null || component.isBlank()) {
-                throw new IllegalArgumentException("Hardware component names must not be null or blank.");
-            }
-        }
-        this.hardwareComponents = hardwareComponents;
-    }
 
     public HardwareProject(String projectName, String role, List<String> hardwareComponents, String objectives,
                            String description, String duration) {
         super(projectName, role, objectives, description, duration);
         if (hardwareComponents == null || hardwareComponents.isEmpty()) {
-            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/tech"));
+            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/hcomp"));
         }
         this.hardwareComponents = hardwareComponents;
     }
 
     /**
      * Creates a copy of the hardware project.
+     *
      * @return Copy of the hardware project.
      */
     @Override
     public HardwareProject copy() {
         return new HardwareProject(projectName, role, hardwareComponents,
-            objectives, description, duration);
+                objectives, description, duration);
     }
 
     /**
      * Returns a string representation of the hardware project.
+     *
      * @return String representation of the hardware project.
      */
     @Override
     public String toString() {
         return "Project: " + projectName + ", Role: " + role +
-            ", Hardware Components: " + String.join(", ", hardwareComponents);
+                ", Hardware Components: " + String.join(", ", hardwareComponents) + ", Objectives: " + objectives
+                + ", Duration: " + duration + ", Description: " + description;
     }
 
     /**
      * Returns a string representation of the hardware project.
      * Shows all details of the hardware project.
+     *
      * @return String representation of the hardware project.
      */
     @Override
@@ -92,6 +86,7 @@ public class HardwareProject extends Project {
 
     /**
      * Returns true if the hardware project is equal to another object.
+     *
      * @param obj Object to compare to.
      * @return True if the hardware project is equal to the object, false otherwise.
      */
@@ -109,6 +104,7 @@ public class HardwareProject extends Project {
 
     /**
      * Converts the hardware project to a JSON object.
+     *
      * @return JSON object representing the hardware project.
      */
     @Override
@@ -139,6 +135,7 @@ public class HardwareProject extends Project {
 
     /**
      * Returns a HardwareProject object from a JSON object.
+     *
      * @param json JSON object representing the hardware project.
      * @return HardwareProject object.
      */

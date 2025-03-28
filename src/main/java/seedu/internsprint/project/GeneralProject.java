@@ -14,13 +14,6 @@ import static seedu.internsprint.util.InternSprintExceptionMessages.MISSING_REQU
 public class GeneralProject extends Project {
     private String department;
 
-    public GeneralProject(String projectName, String role, String department) {
-        super(projectName, role);
-        if (department == null || department.isBlank()) {
-            throw new IllegalArgumentException(String.format(MISSING_REQUIRED_PARAMETERS, "/dept"));
-        }
-        this.department = department;
-    }
 
     public GeneralProject(String projectName, String role, String department, String objectives, String description,
                           String duration) {
@@ -49,7 +42,8 @@ public class GeneralProject extends Project {
      */
     @Override
     public String toString() {
-        return "Project: " + projectName + ", Role: " + role + ", Dept: " + department;
+        return "Project: " + projectName + ", Role: " + role + ", Dept: " + department + ", Objectives: " + objectives
+                + ", Duration: " + duration + ", Description: " + description;
     }
 
     /**
