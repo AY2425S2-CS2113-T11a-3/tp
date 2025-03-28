@@ -44,6 +44,9 @@ in UI for user profile and projects.
 > **Caution:**
 Follow the steps in the following guide precisely. Things will not work out if you deviate in some steps.
 
+> **Note:** `execute(InternshipList internships, UserProfile user)` will be referenced as `execute()` throughout 
+> the document for brevity. The sequence diagrams will still show the full method signature.
+
 First, **fork** this repo, and **clone** the fork into your computer.
 
 If you plan to use Intellij IDEA (highly recommended):
@@ -98,7 +101,7 @@ Here is a partial class diagram of the Logic component:
 _Input Parsing:_ The `CommandParser` class takes a single line of user input and splits it into a command word and
 key value pairs.
 * The command word is used to determine the type of command that needs be executed, and creates the corresponding
-  `Command` object (e.g., `AddCommand`, `DeleteCommand`, `ListCommand`).
+  `*Command` object (e.g., `AddCommand`, `DeleteCommand`, `ListCommand`).
 * The key value pairs are stored in a `HashMap<String, String>` of the `Command` object. The key value pairs are
   validated only during command execution in `isValidParameters()` method.
 
@@ -131,33 +134,36 @@ The `Command` class is an abstract class that represents a command that the user
 It provides an additional layer of abstraction between the user input and the actual execution of the command,
 achieving the **SoC (Separation of Concerns)** design principle.
 
-The partial class structure of the `Command` class is shown below:
+The overview of how `Command` classes are instantiated and executed is shown in the partial sequence diagram below.
 
-Insert command class diagram here
+![CommandClassOverview](images/CommandClassOverview.png)
 
 The abstract `Command` class has the following abstract methods:
-* `isValidParameters()`: Validates the parameters of the command.
-* `execute(InternshipList internships, UserProfile user)`: Executes the command.
+* `isValidParameters()`: Validates the parameters of the command. The parameters are set by `CommandParser` class while
+parsing the user input.
+* `execute()`: Executes the command.
+
+These methods override the abstract methods of the `Command` class through **polymorphism**.
 
 ### 1. Add new Internship
 
 **Overview**:
 
-This command allows the user to add a new internship to the list of internships. The new internship is immediately added
-to the `internships.txt` file at `../data/internships.txt`.
+This command allows the user to add a new internship to their list of internships. 
+The new internship is immediately added to the `internships.txt` file at `../data/internships.txt`.
 
 **How the feature is implemented:**
 
-* The `AddCommand` class is an abstract class extends from the abstract class `Command`.
-* The user can specify the type of internship as `general`, `software` or `hardware` as input.
+* The `AddInternshipCommand` class is an abstract class that extends from another the abstract class `Command`.
+* The user can specify the type of internship he wants to add as `general`, `software` or `hardware` in the input.
 Each type of internship has a separate class that extends the `AddCommand` class, 
-`AddGeneralCommand`, `AddSoftwareCommand`, and `AddHardwareCommand`.
-* These subclasses override the `isValidParameters()` and `execute()` methods to validate the parameters of the command,
-depending on the type of internship.
-* The `execute()` method of adds the internship to the list of internships stored in `InternshipList` which it obtains
-as a parameter.
-  * `InternshipList` class stores the list of internships as a HashMap. Each type of `*AddCommand` will insert the
-  internship into the correct list.
+`AddGeneralInternshipCommand`, `AddSoftwareInternshipCommand`, and `AddHardwareInternshipCommand`.
+* These subclasses override the `isValidParameters()` and `execute()` 
+methods to validate the parameters of the command, depending on the type of internship.
+* The `execute()` method adds the new internship to the list of internships 
+stored in `InternshipList` which it obtains as a parameter.
+  * `InternshipList` class stores the list of internships as a HashMap. Each type of `Add*InternshipCommand` will insert
+  the internship into the correct list.
 
 **Why is it implemented this way:**
 
@@ -181,10 +187,32 @@ testing and debugging to be more focused and efficient.
 
 **Sequence Diagram:**
 
-Below is the sequence diagram for adding a new software internship. A similar sequence is followed for adding a general
-or hardware internship.
+Below is the simplified sequence diagram for adding a new software internship. 
+A similar sequence is followed for adding a general or hardware internship.
 
-Add sequence diagram for adding a software internship here
+![AddCommandSequenceDiagramOverview](images/AddInternshipImages/AddCommandSequenceDiagramOverview.png)
+
+* `InternSprint.java` obtains the correct `*Command` object from the `CommandParser` class and calls the 
+`execute()` method of that `*Command` object.
+* `execute()` method first checks the validity of the provided parameters using the `isValidParameters()` method of
+the same `*Command` object. As mentioned above, this method is overridden in each subclass to validate the parameters 
+according to the type of internship.
+
+* If the parameters are not valid, then a `CommandResult` with the correct usage message is returned to the user.
+The `isSuccessful` field of the `CommandResult` object is set to `false`.
+
+![AddCommandSequenceDiagramOverview](images/AddInternshipImages/AddCommandSequenceDiagramAlternateFrameOne.png)
+
+* If the parameters are valid, then a new internship (here `SoftwareInternship`) is created.
+* If the new internship already exists in the list, then a `CommandResult` with appropriate error message is returned.
+* Else, the new internship is added to the list of internships. 
+* Depending on whether the internships are successfully saved to the `internships.txt` file, 
+a `CommandResult` is returned. The reference frame for saving internships is omitted in the diagram to focus on the
+details of adding a new internship.
+
+![AddCommandSequenceDiagramOverview](images/AddInternshipImages/AddCommandSequenceDiagramAlternateFrameTwo.png)
+
+* Print calls, assert statements, logging, and other non-essential calls are omitted in the diagram for clarity.
 
 ### 2. Edit an Internship
 

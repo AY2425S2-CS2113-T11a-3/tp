@@ -1,7 +1,7 @@
 package seedu.internsprint.util;
 
-import seedu.internsprint.command.CommandResult;
-import seedu.internsprint.internship.Internship;
+import seedu.internsprint.logic.command.CommandResult;
+import seedu.internsprint.model.internship.Internship;
 
 import java.util.List;
 import java.util.Scanner;
