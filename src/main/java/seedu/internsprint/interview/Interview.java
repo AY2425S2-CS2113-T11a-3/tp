@@ -121,8 +121,8 @@ public class Interview {
     public void addInterviewRound(Interview round) {
         if (round != null) {
             this.nextRounds.add(round);
+            roundCounter++;
         }
-        roundCounter++;
     }
 
     public String getInterviewDate() {
@@ -179,5 +179,21 @@ public class Interview {
 
     public void setRoundCounter(int roundCounter) {
         this.roundCounter += roundCounter;
+    }
+
+    public ArrayList<Interview> getNextRounds() {
+        return nextRounds;
+    }
+
+    public LocalDate getInterviewDateAsLocalDate() {
+        return interviewDate;
+    }
+
+    public LocalTime getInterviewStartTimeAsLocalTime() {
+        return interviewStartTime;
+    }
+
+    public LocalTime getInterviewEndTimeAsLocalTime() {
+        return interviewEndTime;
     }
 }
