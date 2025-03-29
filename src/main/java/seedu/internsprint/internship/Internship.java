@@ -177,4 +177,12 @@ public abstract class Internship {
     public void setExpectations(String expectations) {
         this.expectations = expectations;
     }
+
+    public Interview getInterview() {
+        return interview;
+    }
+
+    public void setInterview(Interview interview) {
+        this.interview = interview;
+    }
 }
