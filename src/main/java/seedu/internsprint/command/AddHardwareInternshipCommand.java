@@ -10,7 +10,7 @@ public class AddHardwareInternshipCommand extends AddInternshipCommand {
     public static final String COMMAND_WORD = "add hardware";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a hardware internship to the internship list.\n"
             + "    Parameters: " + "/c COMPANY_NAME " + "/r ROLE " + "/hardtech HARDWARE_TECHNOLOGIES \n"
-            + "    Example: " + COMMAND_WORD + " /c Google " + "/r Hardware Engineer " + "/tech C, C++";
+            + "    Example: " + COMMAND_WORD + " /c Google " + "/r Hardware Engineer " + "/hardtech C, C++";
     public static final String[] REQUIRED_PARAMETERS = {"/c", "/r", "/hardtech"};
     public static final String[] OPTIONAL_PARAMETERS = {"/eli", "/ex", "/status","/desc"};
 
