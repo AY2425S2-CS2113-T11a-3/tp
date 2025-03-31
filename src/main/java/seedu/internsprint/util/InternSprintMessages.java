@@ -50,4 +50,7 @@ public class InternSprintMessages {
     public static final String NO_INTERNSHIPS_FOUND = "No internships found";
     public static final String NUMBER_OF_INTERNSHIPS_FOUND = "Number of internships found: %d";
     public static final String ADD_INTERVIEW_MESSAGE_SUCCESS = "New interview added\n%s";
+    public static final String SAVING_PROFILE_SUCCESS = "Successfully saved user profile to file %s";
+    public static final String LOADING_PROFILE_SUCCESS = "Successfully loaded user profile from file";
+
 }

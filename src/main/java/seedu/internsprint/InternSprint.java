@@ -3,7 +3,7 @@ package seedu.internsprint;
 import seedu.internsprint.logic.command.Command;
 import seedu.internsprint.logic.command.CommandResult;
 import seedu.internsprint.logic.parser.CommandParser;
-import seedu.internsprint.storage.StorageHandler;
+import seedu.internsprint.storage.InternshipStorageHandler;
 import seedu.internsprint.model.internship.InternshipList;
 import seedu.internsprint.model.userprofile.UserProfile;
 import seedu.internsprint.util.InternSprintLogger;
@@ -51,7 +51,7 @@ public class InternSprint {
      */
     private void runCommandLoopUntilExitCommand() {
         logger.log(Level.INFO, "Loading internships from storage");
-        CommandResult result = StorageHandler.loadInternships(internships);
+        CommandResult result = InternshipStorageHandler.loadInternships(internships);
         Ui.showResultToUser(result);
         logger.log(Level.INFO, "Internships loaded successfully");
 

@@ -110,8 +110,8 @@ public class SoftwareProject extends Project {
     @Override
     public JSONObject toJson() {
         Map<String, Object> orderedMap = new LinkedHashMap<>();
-        orderedMap.put("type", "software");
         orderedMap.put("projectName", projectName);
+        orderedMap.put("type", "software");
         orderedMap.put("role", role);
         orderedMap.put("programmingLanguages", programmingLanguages);
         orderedMap.put("objectives", objectives);

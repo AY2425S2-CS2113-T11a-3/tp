@@ -1,6 +1,6 @@
 package seedu.internsprint.model.internship;
 
-import seedu.internsprint.storage.StorageHandler;
+import seedu.internsprint.storage.InternshipStorageHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class InternshipList {
     protected final HashMap<String, ArrayList<Internship>> internshipMap = new HashMap<>();
     protected int internshipCount = 0;
-    private final StorageHandler storageHandler = new StorageHandler();
+    private final InternshipStorageHandler storageHandler = new InternshipStorageHandler();
 
     public InternshipList() {
         internshipMap.put("software", new ArrayList<>());

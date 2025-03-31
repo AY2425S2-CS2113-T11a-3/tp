@@ -1,0 +1,20 @@
+[
+    {
+        "duration": "May-August",
+        "role": "Unit Tester",
+        "description": "Worked at identifying feature flaws in app",
+        "objectives": "To get an A+",
+        "type": "general",
+        "projectName": "Team Project for CS2113",
+        "department": "Software Engineering"
+    },
+    {
+        "duration": "May-August",
+        "role": "Ui Developer",
+        "hardwareComponents": ["Basys Board"],
+        "description": "Worked at creating pixel art for the UI",
+        "objectives": "To get an A+",
+        "type": "hardware",
+        "projectName": "Team Project for EE2026"
+    }
+]

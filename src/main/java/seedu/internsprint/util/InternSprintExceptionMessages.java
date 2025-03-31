@@ -37,4 +37,7 @@ public class InternSprintExceptionMessages {
             "commands or 'help COMMAND' for specific command instructions.";
     public static final String DESC_INVALID_PARAMS = "You have not entered a valid index to show the description.\n"
             + "The desc command works as mentioned below:";
+    public static final String UNABLE_TO_SAVE_PROFILE = "Unable to save user profile to file %s";
+    public static final String UNABLE_TO_LOAD_PROFILE = "Unable to read user profile file";
+
 }

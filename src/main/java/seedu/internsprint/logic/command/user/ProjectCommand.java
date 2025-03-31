@@ -18,7 +18,7 @@ import static seedu.internsprint.util.InternSprintMessages.PROJECT_ADD_MESSAGE_S
 import static seedu.internsprint.util.InternSprintMessages.PROJECT_LIST_COUNT_MESSAGE;
 
 /**
- * Represents a command to add an project.
+ * Represents a command to add a project.
  */
 public abstract class ProjectCommand extends Command {
     protected static Logger logger = InternSprintLogger.getLogger();

@@ -1,5 +1,7 @@
 package seedu.internsprint.model.userprofile.project;
 
+import seedu.internsprint.storage.ProjectStorageHandler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,6 +11,7 @@ import java.util.HashMap;
 public class ProjectList {
     protected final HashMap<String, ArrayList<Project>> projectMap = new HashMap<>();
     protected int projectCount = 0;
+    private final ProjectStorageHandler storageHandler = new ProjectStorageHandler();
 
     public ProjectList() {
         projectMap.put("software", new ArrayList<>());
@@ -25,6 +28,7 @@ public class ProjectList {
         String type = project.getType();
         projectMap.get(type).add(project);
         projectCount++;
+        saveProjects();
         assert contains(project) : "Project should be in the list";
         assert projectCount > 0 : "At least one project should be in the list";
     }
@@ -40,6 +44,13 @@ public class ProjectList {
         return projectMap.get(type).contains(project);
     }
 
+    /**
+     * Saves the projects to the storage.
+     */
+    public void saveProjects() {
+        storageHandler.saveProjects(this);
+    }
+
     public HashMap<String, ArrayList<Project>> getProjectMap() {
         return projectMap;
     }
@@ -47,4 +58,5 @@ public class ProjectList {
     public int getProjectCount() {
         return projectCount;
     }
+
 }

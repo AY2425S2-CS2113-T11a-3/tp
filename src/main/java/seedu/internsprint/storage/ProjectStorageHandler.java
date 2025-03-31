@@ -1,10 +1,7 @@
 package seedu.internsprint.storage;
 
 import seedu.internsprint.logic.command.CommandResult;
-import seedu.internsprint.model.internship.GeneralInternship;
-import seedu.internsprint.model.internship.HardwareInternship;
-import seedu.internsprint.model.internship.SoftwareInternship;
-import seedu.internsprint.model.internship.InternshipList;
+import seedu.internsprint.model.userprofile.project.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,24 +17,24 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static seedu.internsprint.util.InternSprintExceptionMessages.FILE_ALREADY_EXISTS;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_DIRECTORY;
-import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_FILE;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_WRITE_FILE;
+import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_FILE;
+import static seedu.internsprint.util.InternSprintExceptionMessages.FILE_ALREADY_EXISTS;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_READ_FILE;
-
-import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_SUCCESS;
 import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_FIRST_TIME;
+import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_SUCCESS;
 
 /**
- * Handles the reading and writing of data to the file.
+ * Handles the reading and writing of project data to and from the file.
  */
-public class StorageHandler {
-    private static final String FILE_PATH = Paths.get("data", "internships.txt").toString();
-    private static File file;
-    private static Logger logger = Logger.getLogger(StorageHandler.class.getName());
 
-    public StorageHandler() {
+public class ProjectStorageHandler {
+    private static final String FILE_PATH = Paths.get("data", "projects.txt").toString();
+    private static File file;
+    private static Logger logger = Logger.getLogger(ProfileStorageHandler.class.getName());
+
+    public ProjectStorageHandler() {
         file = new File(FILE_PATH);
     }
 
@@ -60,24 +57,22 @@ public class StorageHandler {
                 assert file.exists() : "File should exist at this point";
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Unable to create file {0}", file.getAbsolutePath());
             throw new RuntimeException(String.format(UNABLE_TO_CREATE_FILE,
                     file.getAbsolutePath()));
         }
     }
 
     /**
-     * Saves the internships to the file.
+     * Saves the projects to the file.
      *
-     * @param internships List of internships to be saved.
+     * @param projectList List of projects to be saved.
      */
-    public void saveInternships(InternshipList internships) {
-        logger.log(Level.INFO, "Saving Internships to file ...");
+    public void saveProjects(ProjectList projectList) {
+        logger.log(Level.INFO, "Saving Projects to file ...");
         JSONArray jsonArray = new JSONArray();
-        internships.getInternshipMap().forEach((type, list) -> {
-            list.forEach(internship -> jsonArray.put(internship.toJson()));
+        projectList.getProjectMap().forEach((type, list) -> {
+            list.forEach(project -> jsonArray.put(project.toJson()));
         });
-
         if (!file.exists()) {
             createFile();
         }
@@ -85,31 +80,26 @@ public class StorageHandler {
 
         try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(jsonArray.toString(4));
-            logger.log(Level.INFO, String.format("Successfully saved %s Internships to file %s",
-                jsonArray.length(), file.getAbsolutePath()));
         } catch (IOException e) {
-            logger.log(Level.SEVERE, String.format("Unable to save Internships to file %s", file.getAbsolutePath()));
             throw new RuntimeException(String.format(UNABLE_TO_WRITE_FILE,
                     file.getAbsolutePath()));
         }
     }
 
     /**
-     * Loads the internships from the file.
+     * Loads the projects from the file.
      *
-     * @param internships List of internships to be loaded.
+     * @param projectList List of projects to be loaded.
      * @return CommandResult object indicating the success of the operation.
      */
-    public static CommandResult loadInternships(InternshipList internships) {
-        logger.log(Level.INFO, "Beginning process to load internships from file ...");
+    public static CommandResult loadProjects(ProjectList projectList) {
+        logger.log(Level.INFO, "Beginning process to load projects from file ...");
         CommandResult result;
         if (!file.exists() || file.length() == 0) {
-            logger.log(Level.INFO, "Data file loaded is empty currently");
             result = new CommandResult(LOADING_DATA_FIRST_TIME);
             result.setSuccessful(true);
             return result;
         }
-        assert file.length()!=0 : "File should not be an empty file at this point";
 
         StringBuilder jsonData = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -122,22 +112,17 @@ public class StorageHandler {
             logger.log(Level.SEVERE, "Error reading file");
             return result;
         }
-
         JSONArray jsonArray = new JSONArray(jsonData.toString());
         if (jsonArray.isEmpty()) {
-            logger.log(Level.WARNING, "Error in formatting such that JSONArray could not be" +
-                    "created successfully");
             result = errorReadingFile();
             return result;
         }
-        assert !jsonArray.isEmpty(): "Array of JSON objects read from file should not be an empty at this point";
-        logger.log(Level.INFO, "Successfully extracted internships as JSON objects from file");
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject internshipJson = jsonArray.getJSONObject(i);
-            addInternshipToList(internships, internshipJson);
+            JSONObject projectJson = jsonArray.getJSONObject(i);
+            addProjectToList(projectList, projectJson);
         }
-        logger.log(Level.INFO, "Successfully added internships from file to internship list in app");
+        logger.log(Level.INFO, "Successfully added projects from file to project list in app");
         result = new CommandResult(LOADING_DATA_SUCCESS);
         result.setSuccessful(true);
         return result;
@@ -158,26 +143,25 @@ public class StorageHandler {
     }
 
     /**
-     * Adds the internship to the list of internships.
+     * Adds the project to the list of projects.
      *
-     * @param internships List of internships.
-     * @param internshipJson JSON object representing the internship.
+     * @param projectList List of projects.
+     * @param projectJson JSON object representing the project.
      */
-    private static void addInternshipToList(InternshipList internships, JSONObject internshipJson) {
-        switch (internshipJson.getString("type")) {
-        case "general":
-            internships.addInternship(GeneralInternship.fromJson(internshipJson));
-            break;
-        case "software":
-            internships.addInternship(SoftwareInternship.fromJson(internshipJson));
-            break;
-        case "hardware":
-            internships.addInternship(HardwareInternship.fromJson(internshipJson));
-            break;
-        default:
-            break;
+    private static void addProjectToList(ProjectList projectList, JSONObject projectJson) {
+        String type = projectJson.getString("type");
+        switch (type) {
+            case "hardware":
+                projectList.addProject(HardwareProject.fromJson(projectJson));
+                break;
+            case "software":
+                projectList.addProject(SoftwareProject.fromJson(projectJson));
+                break;
+            case "general":
+                projectList.addProject(GeneralProject.fromJson(projectJson));
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown project type: " + type);
         }
     }
 }
-
-

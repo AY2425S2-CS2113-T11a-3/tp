@@ -11,6 +11,7 @@ import de.vandermeer.asciitable.AsciiTable;
 
 import seedu.internsprint.logic.parser.CommandParser;
 import seedu.internsprint.model.userprofile.project.ProjectList;
+import seedu.internsprint.storage.ProfileStorageHandler;
 import seedu.internsprint.util.InternSprintLogger;
 
 /**
@@ -27,6 +28,7 @@ public class UserProfile {
     public static String internshipDateRange;
     private static final Logger logger = InternSprintLogger.getLogger();
     public final ProjectList projects;
+    private final ProfileStorageHandler storageHandler = new ProfileStorageHandler();
 
     public UserProfile() {
         projects = new ProjectList();
@@ -130,6 +132,32 @@ public class UserProfile {
             sb.append(", Yearly Goals: ").append(yearlyGoals);
         }
         return sb.toString().replaceFirst("^,\\s*", "");
+    }
+
+    /**
+     * Returns a formatted string representation of the user profile.
+     * This method presents the user's details in a structured, readable format,
+     * with each attribute displayed on a new line.
+     *
+     * @return A formatted string containing user profile details.
+     */
+    public String toFormattedString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Name: ").append(name != null ? name : "N/A").append("\n");
+        sb.append("Yearly Goals: ").append(yearlyGoals != null ? yearlyGoals : "N/A").append("\n");
+        sb.append("Monthly Goals: ").append(monthlyGoals != null ? monthlyGoals : "N/A").append("\n");
+        sb.append("Preferred Industries: ").append(preferredIndustries != null ? String.join(", ", preferredIndustries) : "N/A").append("\n");
+        sb.append("Preferred Companies: ").append(preferredCompanies != null ? String.join(", ", preferredCompanies) : "N/A").append("\n");
+        sb.append("Preferred Roles: ").append(preferredRoles != null ? String.join(", ", preferredRoles) : "N/A").append("\n");
+        sb.append("Target Stipend Range: ").append(targetStipendRange != null ? targetStipendRange : "N/A").append("\n");
+        sb.append("Internship Date Range: ").append(internshipDateRange != null ? internshipDateRange : "N/A").append("\n");
+
+        return sb.toString();
+    }
+
+    public void saveProfile() {
+        storageHandler.saveProfileOnStart(this);
     }
 
     /**

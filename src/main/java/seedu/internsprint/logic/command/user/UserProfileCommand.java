@@ -77,6 +77,7 @@ public class UserProfileCommand extends Command {
             result.setSuccessful(false);
             return result;
         }
+        user.saveProfile();
         setUserProfileAttributes(user);
         feedback.add(USER_UPDATE_SUCCESS_MESSAGE);
         feedback.add(user.toString());
@@ -87,30 +88,42 @@ public class UserProfileCommand extends Command {
 
     private void setUserProfileAttributes(UserProfile user) {
         logger.log(Level.INFO, "Updating given parameters...");
+        boolean isUpdated = false;
         if (parameters.containsKey("/name")) {
             user.setName(parameters.get("/name"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/pay")) {
             user.setTargetStipendRange(parameters.get("/pay"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/ind")) {
             user.setPreferredIndustries(parameters.get("/ind"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/time")) {
             //to be edited to work with date time parser
             user.setInternshipDateRange(parameters.get("/time"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/ygoals")) {
             user.setYearlyGoals(parameters.get("/ygoals"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/mgoals")) {
             user.setMonthlyGoals(parameters.get("/mgoals"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/c")) {
             user.setPreferredCompanies(parameters.get("/c"));
+            isUpdated = true;
         }
         if (parameters.containsKey("/r")) {
             user.setPreferredRoles(parameters.get("/r"));
+            isUpdated = true;
+        }
+        if (isUpdated) {
+            user.saveProfile();
         }
     }
 }
