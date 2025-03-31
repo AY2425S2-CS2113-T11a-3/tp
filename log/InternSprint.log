@@ -1,0 +1,42 @@
+Mar 27, 2025 11:29:25 PM seedu.internsprint.InternSprint run
+INFO: Starting InternSprint
+Mar 27, 2025 11:29:25 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Loading internships from storage
+Mar 27, 2025 11:29:25 PM seedu.internsprint.handler.StorageHandler loadInternships
+INFO: Beginning process to load internships from file ...
+Mar 27, 2025 11:29:25 PM seedu.internsprint.handler.StorageHandler loadInternships
+INFO: Successfully extracted internships as JSON objects from file
+Mar 27, 2025 11:29:25 PM seedu.internsprint.handler.StorageHandler loadInternships
+INFO: Successfully added internships from file to internship list in app
+Mar 27, 2025 11:29:25 PM seedu.internsprint.command.CommandResult <init>
+INFO: One line of feedback provided to user...
+Mar 27, 2025 11:29:25 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Internships loaded successfully
+Mar 27, 2025 11:29:30 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: User command: view
+Mar 27, 2025 11:29:30 PM seedu.internsprint.handler.CommandParser parseCommand
+INFO: User command inside parseCommand: view
+Mar 27, 2025 11:29:30 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Parsed Command: seedu.internsprint.command.ViewUserCommand@28ba21f3
+Mar 27, 2025 11:29:30 PM seedu.internsprint.command.ViewUserCommand execute
+INFO: Entering execute in view user profile command...
+Mar 27, 2025 11:29:30 PM seedu.internsprint.command.CommandResult <init>
+INFO: Multiple feedback provided to user...
+Mar 27, 2025 11:29:30 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Command executed successfully
+Mar 27, 2025 11:29:33 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: User command: bye
+Mar 27, 2025 11:29:33 PM seedu.internsprint.handler.CommandParser parseCommand
+INFO: User command inside parseCommand: bye
+Mar 27, 2025 11:29:33 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Parsed Command: seedu.internsprint.command.ByeCommand@2cfb4a64
+Mar 27, 2025 11:29:33 PM seedu.internsprint.handler.StorageHandler saveInternships
+INFO: Saving Internships to file ...
+Mar 27, 2025 11:29:33 PM seedu.internsprint.handler.StorageHandler saveInternships
+INFO: Successfully saved 1 Internships to file C:\Users\Nikita\Desktop\cs2113\tp\data\internships.txt
+Mar 27, 2025 11:29:33 PM seedu.internsprint.command.CommandResult <init>
+INFO: Multiple feedback provided to user...
+Mar 27, 2025 11:29:33 PM seedu.internsprint.InternSprint runCommandLoopUntilExitCommand
+INFO: Command executed successfully
+Mar 27, 2025 11:29:33 PM seedu.internsprint.InternSprint exit
+INFO: Exiting InternSprint

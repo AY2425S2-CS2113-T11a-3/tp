@@ -1,0 +1,6 @@
+[{
+    "role": "IT Intern",
+    "type": "general",
+    "department": "IT",
+    "companyName": "UBS"
+}]
