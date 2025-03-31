@@ -1,10 +1,13 @@
 package seedu.internsprint.storage;
 
 import seedu.internsprint.logic.command.CommandResult;
-import seedu.internsprint.model.userprofile.project.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import seedu.internsprint.model.userprofile.project.GeneralProject;
+import seedu.internsprint.model.userprofile.project.HardwareProject;
+import seedu.internsprint.model.userprofile.project.ProjectList;
+import seedu.internsprint.model.userprofile.project.SoftwareProject;
 
 import java.io.File;
 import java.io.FileReader;
@@ -151,17 +154,17 @@ public class ProjectStorageHandler {
     private static void addProjectToList(ProjectList projectList, JSONObject projectJson) {
         String type = projectJson.getString("type");
         switch (type) {
-            case "hardware":
-                projectList.addProject(HardwareProject.fromJson(projectJson));
-                break;
-            case "software":
-                projectList.addProject(SoftwareProject.fromJson(projectJson));
-                break;
-            case "general":
-                projectList.addProject(GeneralProject.fromJson(projectJson));
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown project type: " + type);
+        case "hardware":
+            projectList.addProject(HardwareProject.fromJson(projectJson));
+            break;
+        case "software":
+            projectList.addProject(SoftwareProject.fromJson(projectJson));
+            break;
+        case "general":
+            projectList.addProject(GeneralProject.fromJson(projectJson));
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown project type: " + type);
         }
     }
 }

@@ -147,11 +147,16 @@ public class UserProfile {
         sb.append("Name: ").append(name != null ? name : "N/A").append("\n");
         sb.append("Yearly Goals: ").append(yearlyGoals != null ? yearlyGoals : "N/A").append("\n");
         sb.append("Monthly Goals: ").append(monthlyGoals != null ? monthlyGoals : "N/A").append("\n");
-        sb.append("Preferred Industries: ").append(preferredIndustries != null ? String.join(", ", preferredIndustries) : "N/A").append("\n");
-        sb.append("Preferred Companies: ").append(preferredCompanies != null ? String.join(", ", preferredCompanies) : "N/A").append("\n");
-        sb.append("Preferred Roles: ").append(preferredRoles != null ? String.join(", ", preferredRoles) : "N/A").append("\n");
-        sb.append("Target Stipend Range: ").append(targetStipendRange != null ? targetStipendRange : "N/A").append("\n");
-        sb.append("Internship Date Range: ").append(internshipDateRange != null ? internshipDateRange : "N/A").append("\n");
+        sb.append("Preferred Industries: ").append(preferredIndustries != null ?
+                String.join(", ", preferredIndustries) : "N/A").append("\n");
+        sb.append("Preferred Companies: ").append(preferredCompanies != null ?
+                String.join(", ", preferredCompanies) : "N/A").append("\n");
+        sb.append("Preferred Roles: ").append(preferredRoles != null ?
+                String.join(", ", preferredRoles) : "N/A").append("\n");
+        sb.append("Target Stipend Range: ").append(targetStipendRange != null ?
+                targetStipendRange : "N/A").append("\n");
+        sb.append("Internship Date Range: ").append(internshipDateRange != null ?
+                internshipDateRange : "N/A").append("\n");
 
         return sb.toString();
     }

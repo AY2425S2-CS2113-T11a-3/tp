@@ -1,8 +1,8 @@
-Name: theertha
-Yearly Goals: N/A
-Monthly Goals: N/A
-Preferred Industries: N/A
-Preferred Companies: N/A
-Preferred Roles: engineer
-Target Stipend Range: N/A
+Name: Nikita
+Yearly Goals: Be richer
+Monthly Goals: Be rich
+Preferred Industries: Tech
+Preferred Companies: Google
+Preferred Roles: N/A
+Target Stipend Range: 1000
 Internship Date Range: N/A
