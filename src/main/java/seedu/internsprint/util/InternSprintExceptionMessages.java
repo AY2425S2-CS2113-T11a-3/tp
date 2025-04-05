@@ -8,8 +8,8 @@ public class InternSprintExceptionMessages {
     public static final String REPEATED_FLAG = "Repeated flag found: %s";
 
     public static final String INVALID_DATE_FORMAT = "Invalid date format or no date found";
-    public static final String PARTIAL_DATE_FORMAT = "Some input words is not recognized as a date. \n"
-        + "    Date interpreted is: %s. Please give a better format.";
+    public static final String PARTIAL_DATE_FORMAT = "Some input words is not recognized as a date/time. \n"
+        + "    Date/Time interpreted from %s is: %s. Please give a better format.";
     public static final String END_TIME_BEFORE_START_TIME = "Interview start time cannot be after end time.";
 
     public static final String UNABLE_TO_CREATE_DIRECTORY = "Unable to create directory: %s";
