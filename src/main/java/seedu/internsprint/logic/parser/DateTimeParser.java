@@ -1,11 +1,14 @@
 package seedu.internsprint.logic.parser;
 
+import seedu.internsprint.util.InternSprintLogger;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -19,6 +22,7 @@ import static seedu.internsprint.util.InternSprintExceptionMessages.PARTIAL_DATE
  * Parses date and time input strings into LocalDateTime, LocalDate, and LocalTime objects.
  */
 public class DateTimeParser {
+    private static final Logger logger = InternSprintLogger.getLogger();
 
     /**
      * Parses a date and time input string into a LocalDateTime object.
@@ -27,6 +31,7 @@ public class DateTimeParser {
      * @return The LocalDateTime object.
      */
     public static LocalDateTime parseDateTimeInput(String input) {
+        logger.info("Parsing date and time input");
         Date date = extractDate(input);
         return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
@@ -38,6 +43,7 @@ public class DateTimeParser {
      * @return The LocalDate object.
      */
     public static LocalDate parseDateInput(String input) {
+        logger.info("Parsing date only input");
         Date date = extractDate(input);
         return LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
@@ -49,6 +55,7 @@ public class DateTimeParser {
      * @return The LocalTime object.
      */
     public static LocalTime parseTimeInput(String input) {
+        logger.info("Parsing time only input");
         input = normalizeTimeInput(input);
         System.out.println("Normalized input: " + input);
         Date date = extractDate(input);
@@ -95,10 +102,12 @@ public class DateTimeParser {
      * @return The extracted date.
      */
     private static Date extractDate(String input) {
+        logger.info("Extracting date object from input");
         Parser parser = new Parser();
         List<DateGroup> groups = parser.parse(input);
 
         if (groups.isEmpty()) {
+            logger.warning("No date groups found");
             throw new IllegalArgumentException(INVALID_DATE_FORMAT);
         }
 
@@ -106,6 +115,7 @@ public class DateTimeParser {
         String matchedText = group.getText().toLowerCase();
 
         if (!input.toLowerCase().equals(matchedText)) {
+            logger.warning("Partial date format found or invalid date");
             throw new IllegalArgumentException(String.format(PARTIAL_DATE_FORMAT, matchedText));
         }
         return group.getDates().get(0);

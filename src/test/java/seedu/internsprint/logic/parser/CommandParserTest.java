@@ -12,6 +12,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CommandParserTest {
 
     @Test
+    void splitCommandTypeAndParams_provideValidSingleWordCommand_splitCorrectly() {
+        String userInput = "add /key1 value1 /key2 value2";
+        String[] result = CommandParser.splitCommandTypeAndParams(userInput);
+        assertEquals("add", result[0]);
+        assertEquals("/key1 value1 /key2 value2", result[1]);
+    }
+
+    @Test
+    void splitCommandTypeAndParams_provideValidMultiWordCommand_splitCorrectly() {
+        String userInput = "add software /key1 value1 /key2 value2";
+        String[] result = CommandParser.splitCommandTypeAndParams(userInput);
+        assertEquals("add software", result[0]);
+        assertEquals("/key1 value1 /key2 value2", result[1]);
+    }
+
+    @Test
+    void splitCommandTypeAndParams_provideSingleWordCommandWithNoKey_splitCorrectly() {
+        String userInput = "bye";
+        String[] result = CommandParser.splitCommandTypeAndParams(userInput);
+        assertEquals("bye", result[0]);
+        assertEquals("", result[1]);
+    }
+
+    @Test
     void parseKeyValuePairs_emptyInput_returnsNull() {
         Command command = new AddSoftwareInternshipCommand();
         CommandParser.parseKeyValuePairs("", command);
@@ -50,6 +74,14 @@ class CommandParserTest {
         assertEquals(2, command.getParameters().size());
         assertEquals("value1 value2", command.getParameters().get("/key1"));
         assertEquals("value3", command.getParameters().get("/key2"));
+    }
+
+    @Test
+    void parseKeyValuePairs_onlyDescription_returnsCorrectMap() {
+        Command command = new AddSoftwareInternshipCommand();
+        CommandParser.parseKeyValuePairs("description", command);
+        assertEquals(1, command.getParameters().size());
+        assertEquals("description", command.getParameters().get("description"));
     }
 
     @Test
@@ -108,5 +140,12 @@ class CommandParserTest {
         InternshipList internships = new InternshipList();
         assertThrows(IllegalArgumentException.class,
             () -> CommandParser.validateIndex("0", internships));
+    }
+
+    @Test
+    void validateIndex_stringDoesNotContainNumber_throwsIllegalArgumentException() {
+        InternshipList internships = new InternshipList();
+        assertThrows(IllegalArgumentException.class,
+            () -> CommandParser.validateIndex("abc", internships));
     }
 }

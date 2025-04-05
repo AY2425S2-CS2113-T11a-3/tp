@@ -35,7 +35,7 @@ public class AddInterviewCommand extends Command {
     public static final String[] REQUIRED_PARAMETERS = {"/index", "/date", "/start", "/end", "/type"};
     public static final String[] OPTIONAL_PARAMETERS = {"/email", "/notes"};
 
-    private static Logger logger = InternSprintLogger.getLogger();
+    private static final Logger logger = InternSprintLogger.getLogger();
 
     /**
      * Checks if the parameters entered by the user are valid.
@@ -132,7 +132,7 @@ public class AddInterviewCommand extends Command {
         Internship internship = internshipMap.get(type).get(index);
 
         if (internship == null) {
-            logger.warning("Internship not found in add interview command.");
+            logger.warning("Internship with specified details not found in add interview command.");
             feedback.add(DESC_UNABLE_TO_FIND_INTERNSHIP);
         }
         return internship;
@@ -159,6 +159,7 @@ public class AddInterviewCommand extends Command {
                 parameters.getOrDefault("/notes", "")
             );
         } catch (IllegalArgumentException e) {
+            logger.severe("Date or time format is invalid while adding an interview.");
             feedback.add(e.getMessage());
             return new CommandResult(feedback, false);
         }
