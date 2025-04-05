@@ -1,3 +1,9 @@
 add software /c Google /r Software Developer /tech Python
+add hardware /c AMD /r Hardware Engineer /hardtech Arduino
+list
 edit /index 1 /tech Python, AWS
+desc /index 1
+delete /index 2
+delete /index 1
+list
 bye
