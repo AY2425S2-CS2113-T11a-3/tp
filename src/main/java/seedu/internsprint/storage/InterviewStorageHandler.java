@@ -142,7 +142,7 @@ public class InterviewStorageHandler implements Storage<InternshipList> {
                 feedback.add("Faulty entry: " + interviewJson.toString(4));
             }
         }
-        
+
         if (hasCorruption) {
             feedback.add(0, CORRUPTED_INTERVIEW_FILE);
             feedback.add("Please fix or delete the file at: " + file.getAbsolutePath());

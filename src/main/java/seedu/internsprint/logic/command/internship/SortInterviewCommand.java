@@ -22,10 +22,10 @@ import static seedu.internsprint.util.InternSprintMessages.SORT_INTERVIEWS_MESSA
 
 public class SortInterviewCommand extends Command {
     public static final String COMMAND_WORD = "sortInterviews";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts the internship by the name of the interview " +
-            "entry.\n "
-            + " Parameters: None\n"
-            + "Example: " + COMMAND_WORD;
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Sorts the internship by the name of the interview " +
+            "entry.\n"
+            + "    Parameters: None\n"
+            + "    Example: " + COMMAND_WORD;
     private static final Logger logger = InternSprintLogger.getLogger();
 
     @Override
