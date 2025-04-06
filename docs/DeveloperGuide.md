@@ -201,6 +201,7 @@ InternSprint . It represents the internal state of the application and is update
 - Handle user information and goals via the `UserProfile`
 
 #### Package Structure
+<div style="page-break-after: always;"></div>
 
 ```
 model
@@ -437,8 +438,10 @@ and a successful execution result is returned to the user.
   a `CommandResult` is returned. The reference frame for saving internships is similar to the reference frame 
   under `DeleteCommand`.
 
+<div style="page-break-after: always;"></div>
+
 <div align="center">
-<img src="images/EditImages/edit_overview.PNG" alt="EditCommandSequenceDiagramOverview" width="70%">
+<img src="images/EditImages/edit_overview.png" alt="EditCommandSequenceDiagramOverview" width="70%">
 </div>
 
 Below are the expanded reference frames for successful and unsuccessful CommandResults returned by execute() method.
@@ -681,6 +684,8 @@ The product helps CEG students **effortlessly track and maintain job application
 commands, all within a unified CLI. Stay organized, save time, and streamline the application process with automation, 
 ensuring a seamless and efficient job hunt.
 
+<div style="page-break-after: always;"></div>
+
 ## User Stories
 
 | Version | As a ...    | I want to ...                                                                                                  | So that I can ...                                                                                     |
@@ -852,24 +857,24 @@ the internship. You may `list` all internships to confirm. (Can check optional p
 
 **2.8 Adding interviews for internships**
 
-1. Test case: `interviewfor `
+1. Test case: `interview for `
 
     Expected: Should output error highlighting correct usage of add interview command.
 
 
-2. Test case: `interviewfor /index 1 /date 2025-01-01 /start 10:00 /end 14:00 /type technical round`
+2. Test case: `interview for /index 1 /date 2025-01-01 /start 10:00 /end 14:00 /type technical round`
 
     Expected: Should correctly add a technical interview to the internship in the list at index 1 with above timings.
 (You can potentially explore adding more optional parameter according to user guide. You may `desc` this index internship to confirm it will not appear on listing.)
 
 
-3. Test case: `interviewfor /date 2025-01-01 /start 10:00 /end 14:00 /type technical round`
+3. Test case: `interview for /date 2025-01-01 /start 10:00 /end 14:00 /type technical round`
 
     Expected: Should output error highlighting no index/invalid parameters. 
 
 **2.9 Sorting interviews for internships**
 
-1. Test case: `sortInterviews `
+1. Test case: `sort interviews `
 
     Expected: Should sort all rounds of interviews added across multiple internships by date.
 

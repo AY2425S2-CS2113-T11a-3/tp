@@ -2,6 +2,7 @@ package seedu.internsprint.logic.command.user;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.internsprint.logic.command.CommandResult;
 import seedu.internsprint.model.internship.InternshipList;
 import seedu.internsprint.model.userprofile.UserProfile;
 
@@ -47,7 +48,7 @@ class UserProfileCommandTest {
         UserProfileCommand userProfileCommand = new UserProfileCommand();
         HashMap<String, String> parameters = userProfileCommand.getParameters();
         parameters.put("/name", "Nikita");
-        parameters.put("/pay", "1000");
+        parameters.put("/pay", "1000-2000");
         parameters.put("/ind", "Tech");
         parameters.put("/mgoals", "Be rich");
         parameters.put("/ygoals", "Be richer");
@@ -56,7 +57,40 @@ class UserProfileCommandTest {
         userProfileCommand.execute(new InternshipList(), user);
         assertEquals("Nikita", user.getName());
         assertEquals("Be rich", user.getMonthlyGoals());
-        assertEquals("1000", user.getTargetStipendRange());
+        assertEquals("1000.0 - 2000.0", user.getTargetStipendRange());
+    }
+    @Test
+    void execute_wordStipend_returnsInvalid() {
+        UserProfile user = new UserProfile();
+        UserProfileCommand userProfileCommand = new UserProfileCommand();
+        HashMap<String, String> parameters = userProfileCommand.getParameters();
+        parameters.put("/name", "Nikita");
+        parameters.put("/pay", "this-that");
+        userProfileCommand.setParameters(parameters);
+        CommandResult result = userProfileCommand.execute(new InternshipList(), user);
+        assertFalse(result.isSuccessful());
+    }
+    @Test
+    void execute_minMoreThanMaxStipend_returnsInvalid() {
+        UserProfile user = new UserProfile();
+        UserProfileCommand userProfileCommand = new UserProfileCommand();
+        HashMap<String, String> parameters = userProfileCommand.getParameters();
+        parameters.put("/name", "Nikita");
+        parameters.put("/pay", "2000-1");
+        userProfileCommand.setParameters(parameters);
+        CommandResult result = userProfileCommand.execute(new InternshipList(), user);
+        assertFalse(result.isSuccessful());
+    }
+    @Test
+    void execute_twoDPChecks_updatesCorrectly() {
+        UserProfile user = new UserProfile();
+        UserProfileCommand userProfileCommand = new UserProfileCommand();
+        HashMap<String, String> parameters = userProfileCommand.getParameters();
+        parameters.put("/name", "Nikita");
+        parameters.put("/pay", "2000.00327983-30000.8924789");
+        userProfileCommand.setParameters(parameters);
+        userProfileCommand.execute(new InternshipList(), user);
+        assertEquals("2000.0 - 30000.89", user.getTargetStipendRange());
     }
 
 }

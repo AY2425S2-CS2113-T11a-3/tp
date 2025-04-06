@@ -11,6 +11,9 @@ import java.util.Arrays;
 
 import static seedu.internsprint.util.InternSprintExceptionMessages.USERPROFILE_INVALID_PARAMS;
 import static seedu.internsprint.util.InternSprintMessages.USER_UPDATE_SUCCESS_MESSAGE;
+import static seedu.internsprint.util.InternSprintExceptionMessages.INVALID_STIPEND_RANGE;
+import static seedu.internsprint.util.InternSprintExceptionMessages.NOTE_NO_PARAMETERS;
+
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -80,13 +83,28 @@ public class UserProfileCommand extends Command {
             result.setSuccessful(false);
             return result;
         }
-        setUserProfileAttributes(user);
+        if (parameters.isEmpty()){
+            feedback.add(NOTE_NO_PARAMETERS);
+            feedback.add(MESSAGE_USAGE);
+            feedback.add(user.toString());
+            result = new CommandResult(feedback);
+            result.setSuccessful(true);
+            return result;
+        }
 
+        boolean wrongInputByUser = setUserProfileAttributes(user,feedback);
+        if (wrongInputByUser){
+            feedback.add(MESSAGE_USAGE);
+            result = new CommandResult(feedback);
+            result.setSuccessful(false);
+            return result;
+        }
         result = user.saveProfile(feedback);
         if (!result.isSuccessful()) {
             logger.log(Level.WARNING, "There was an error saving the profile.");
             return result;
         }
+
 
         feedback.add(USER_UPDATE_SUCCESS_MESSAGE);
         feedback.add(user.toString());
@@ -95,19 +113,24 @@ public class UserProfileCommand extends Command {
         return result;
     }
 
-    private void setUserProfileAttributes(UserProfile user) {
+    private boolean setUserProfileAttributes(UserProfile user, ArrayList<String> feedback) {
         logger.log(Level.INFO, "Updating given parameters...");
         if (parameters.containsKey("/name")) {
             user.setName(parameters.get("/name"));
         }
         if (parameters.containsKey("/pay")) {
-            user.setTargetStipendRange(parameters.get("/pay"));
+            String stipendRange = parameters.get("/pay");
+            if (!isValidStipendRange(stipendRange)) {
+                feedback.add(INVALID_STIPEND_RANGE);
+                return true;
+            } else {
+                user.setTargetStipendRange(stipendRange);
+            }
         }
         if (parameters.containsKey("/ind")) {
             user.setPreferredIndustries(parameters.get("/ind"));
         }
         if (parameters.containsKey("/time")) {
-            //to be edited to work with date time parser
             user.setInternshipDateRange(parameters.get("/time"));
         }
         if (parameters.containsKey("/ygoals")) {
@@ -122,5 +145,27 @@ public class UserProfileCommand extends Command {
         if (parameters.containsKey("/r")) {
             user.setPreferredRoles(parameters.get("/r"));
         }
+        return false;
     }
+    private boolean isValidStipendRange(String stipendRange) {
+        try {
+            String[] parts = stipendRange.trim().split("-");
+            if (parts.length != 2) {
+                return false;
+            }
+
+            double min = Double.parseDouble(parts[0].trim());
+            double max = Double.parseDouble(parts[1].trim());
+            min = Math.round(min * 100.0) / 100.0;
+            max = Math.round(max * 100.0) / 100.0;
+            return !(min >= max);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 }
+
+
+
+

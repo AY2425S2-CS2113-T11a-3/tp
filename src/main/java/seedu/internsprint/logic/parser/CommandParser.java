@@ -74,10 +74,10 @@ public class CommandParser {
         case "add general":
             command = new AddGeneralInternshipCommand();
             break;
-        case "interviewfor":
+        case "interview for":
             command = new AddInterviewCommand();
             break;
-        case "sortInterviews":
+        case "sort interviews":
             command = new SortInterviewCommand();
             break;
         case "bye":
@@ -126,7 +126,7 @@ public class CommandParser {
             command = new ProjectHardwareCommand();
             break;
         default:
-            throw new IllegalArgumentException(String.format(INVALID_COMMAND_TYPE, commandType));
+            throw new IllegalArgumentException(INVALID_COMMAND_TYPE);
         }
         parseKeyValuePairs(params, command);
         return command;
@@ -138,12 +138,13 @@ public class CommandParser {
      * @param userInput User input string.
      * @return Array containing the command type and the parameters.
      */
-    private static String[] splitCommandTypeAndParams(String userInput) {
-        String[] flagCommands = {"add software", "add hardware", "add general", "edit", "my", "project general",
+    protected static String[] splitCommandTypeAndParams(String userInput) {
+        String[] flagCommands = {"add software", "add hardware", "add general", "project general",
             "project software", "project hardware", "view software", "view hardware", "view general",
-            "view user"};
+            "view user", "sort interviews", "interview for"};
         for (String command : flagCommands) {
-            if (userInput.toLowerCase().startsWith(command)) {
+            if (userInput.trim().toLowerCase().equals(command) ||
+                userInput.trim().toLowerCase().startsWith(command + " ")) {
                 return new String[]{command, userInput.substring(command.length()).trim()};
             }
         }
@@ -169,6 +170,7 @@ public class CommandParser {
 
         String[] parts = params.trim().split("(?=\\s*/[a-zA-Z]+)");
         if (!parts[0].trim().startsWith("/")) {
+            logger.info("Found a parameter that is not part of a flag.");
             keyValueMap.put("description", parts[0].trim());
             if (parts.length == 1) {
                 command.setParameters(keyValueMap);
@@ -183,6 +185,7 @@ public class CommandParser {
             }
             String[] keyValue = part.trim().split("\\s+", 2);
             if (keyValue.length < 2) {
+                logger.warning("Key found with no value.");
                 throw new IllegalArgumentException(String.format(MISSING_VALUE_INPUT, keyValue[0]));
             }
 
@@ -190,10 +193,12 @@ public class CommandParser {
             String value = keyValue[1].trim();
 
             if (keyValueMap.containsKey(key)) {
+                logger.warning("Repeated flag found.");
                 throw new IllegalArgumentException(String.format(REPEATED_FLAG, key));
             }
 
             if (value.contains("/")) {
+                logger.warning("'/' found in value.");
                 throw new IllegalArgumentException(ILLEGAL_VALUE_INPUT);
             }
 
@@ -225,6 +230,7 @@ public class CommandParser {
      */
     public static String[] validateIndex(String index, InternshipList internships) {
         if (index.isEmpty()) {
+            logger.warning("Index is empty.");
             throw new IllegalArgumentException(MISSING_INDEX);
         }
         try {
@@ -248,8 +254,8 @@ public class CommandParser {
             }
             return new String[]{type, Integer.toString(indexValue - 1)};
         } catch (NumberFormatException e) {
+            logger.warning("Index is not a number.");
             throw new IllegalArgumentException(INVALID_INDEX);
         }
     }
-
 }

@@ -70,7 +70,7 @@ public abstract class AddInternshipCommand extends Command {
      */
     @Override
     public CommandResult execute(InternshipList internships, UserProfile user) {
-        logger.log(Level.INFO, "Executing add command");
+        logger.log(Level.INFO, "Executing add internship command");
         CommandResult result;
         if (!isValidParameters()) {
             logger.log(Level.SEVERE, "Invalid parameters entered");

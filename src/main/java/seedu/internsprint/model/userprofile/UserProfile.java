@@ -29,6 +29,8 @@ public class UserProfile {
     public static ArrayList<String> preferredIndustries;
     public static ArrayList<String> preferredCompanies;
     public static ArrayList<String> preferredRoles;
+    public static double minTargetStipend;
+    public static double maxTargetStipend;
     public static String targetStipendRange;
     public static String internshipDateRange;
     private static final Logger logger = InternSprintLogger.getLogger();
@@ -93,7 +95,18 @@ public class UserProfile {
     }
 
     public void setTargetStipendRange(String targetStipendRange) {
-        UserProfile.targetStipendRange = targetStipendRange;
+        if (targetStipendRange.equals("N/A")){
+            UserProfile.targetStipendRange = "N/A";
+        }else {
+            String[] parts = targetStipendRange.trim().split("-");
+            double min = Double.parseDouble(parts[0].trim());
+            double max = Double.parseDouble(parts[1].trim());
+            min = Math.round(min * 100.0) / 100.0;
+            max = Math.round(max * 100.0) / 100.0;
+            UserProfile.minTargetStipend = min;
+            UserProfile.maxTargetStipend = max;
+            UserProfile.targetStipendRange = min + " - " + max;
+        }
     }
 
     public String getInternshipDateRange() {

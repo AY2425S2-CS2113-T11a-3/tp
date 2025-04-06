@@ -26,6 +26,7 @@ public class SortInterviewCommand extends Command {
             "entry.\n"
             + "    Parameters: None\n"
             + "    Example: " + COMMAND_WORD;
+
     private static final Logger logger = InternSprintLogger.getLogger();
 
     @Override
@@ -93,7 +94,7 @@ public class SortInterviewCommand extends Command {
             }
         }
 
-        logger.log(Level.INFO, "sortInterviews command executed successfully");
+        logger.log(Level.INFO, "sort interviews command executed successfully");
         result = new CommandResult(feedback);
         result.setSuccessful(true);
         return result;

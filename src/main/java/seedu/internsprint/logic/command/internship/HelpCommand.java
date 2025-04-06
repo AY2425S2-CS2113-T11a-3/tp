@@ -35,8 +35,8 @@ public class HelpCommand extends Command {
         COMMAND_HELP_MESSAGES.put("add general", AddGeneralInternshipCommand.MESSAGE_USAGE);
         COMMAND_HELP_MESSAGES.put("add software", AddSoftwareInternshipCommand.MESSAGE_USAGE);
         COMMAND_HELP_MESSAGES.put("add hardware", AddHardwareInternshipCommand.MESSAGE_USAGE);
-        COMMAND_HELP_MESSAGES.put("interviewfor", AddInterviewCommand.MESSAGE_USAGE);
-        COMMAND_HELP_MESSAGES.put("sortInterviews", SortInterviewCommand.MESSAGE_USAGE);
+        COMMAND_HELP_MESSAGES.put("interview for", AddInterviewCommand.MESSAGE_USAGE);
+        COMMAND_HELP_MESSAGES.put("sort interviews", SortInterviewCommand.MESSAGE_USAGE);
         COMMAND_HELP_MESSAGES.put("list", ListCommand.MESSAGE_USAGE);
         COMMAND_HELP_MESSAGES.put("description", DescriptionCommand.MESSAGE_USAGE);
         COMMAND_HELP_MESSAGES.put("find", FindCommand.MESSAGE_USAGE);
