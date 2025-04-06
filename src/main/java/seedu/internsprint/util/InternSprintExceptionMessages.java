@@ -55,4 +55,8 @@ public class InternSprintExceptionMessages {
         "that internship.\n" + "    Please check your date and time or the internship you are referring to.";
     public static final String UNABLE_TO_SAVE_PROFILE = "Unable to save user profile to file %s";
     public static final String UNABLE_TO_LOAD_PROFILE = "Unable to read user profile file";
+    public static final String CORRUPTED_FILE = "The internship data file is corrupted.";
+    public static final String CORRUPTED_PROJECT_FILE = "The project data file is corrupted.";
+    public static final String CORRUPTED_INTERVIEW_FILE = "The interview data file is corrupted.";
+    public static final String CORRUPTED_PROFILE_FILE = "The profile data file is corrupted.";
 }

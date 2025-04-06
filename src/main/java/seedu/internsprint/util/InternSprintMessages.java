@@ -7,7 +7,7 @@ public class InternSprintMessages {
     public static final String LOADING_DATA_SUCCESS = "Your previous saved data is set up and ready to go!";
     public static final String LIST_MESSAGE_SUCCESS = "Here is your internship list!";
     public static final String DESC_MESSAGE_SUCCESS = "Here is your internship description!";
-    public static final String LOADING_DATA_FIRST_TIME = "Your internship list is set up and ready to go! Note you have"
+    public static final String LOADING_DATA_FIRST_TIME = "Your lists are set up and ready to go! Note you have"
                                                         + " no data currently saved. Feel free to explore!";
     public static final String MESSAGE_DUPLICATE_INTERNSHIP = "This internship already exists in the internship list";
     public static final String BYE_MESSAGE = "Goodbye! Hope to see you again soon!";

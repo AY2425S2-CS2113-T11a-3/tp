@@ -1,5 +1,6 @@
 package seedu.internsprint.storage;
 
+import org.json.JSONException;
 import seedu.internsprint.exceptions.DuplicateEntryException;
 import seedu.internsprint.logic.command.CommandResult;
 import seedu.internsprint.model.internship.GeneralInternship;
@@ -18,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +27,10 @@ import static seedu.internsprint.util.InternSprintExceptionMessages.FILE_ALREADY
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_DIRECTORY;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_FILE;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_READ_FILE;
-
+import static seedu.internsprint.util.InternSprintExceptionMessages.CORRUPTED_FILE;
 import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_SUCCESS;
 import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_FIRST_TIME;
+
 
 /**
  * Handles the storage of internship data.
@@ -107,14 +108,13 @@ public class InternshipStorageHandler implements Storage<InternshipList> {
     public CommandResult load(InternshipList internships) {
         logger.log(Level.INFO, "Beginning process to load internships from file ...");
         CommandResult result;
+
         if (!file.exists() || file.length() == 0) {
             logger.log(Level.INFO, "Data file loaded is empty currently");
             result = new CommandResult(LOADING_DATA_FIRST_TIME);
             result.setSuccessful(true);
             return result;
         }
-        assert file.length() != 0 : "File should not be an empty file at this point";
-
         StringBuilder jsonData = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -122,24 +122,36 @@ public class InternshipStorageHandler implements Storage<InternshipList> {
                 jsonData.append(line);
             }
         } catch (IOException e) {
-            result = errorReadingFile();
             logger.log(Level.SEVERE, "Error reading file");
-            return result;
+            return errorReadingFile();
         }
-
         JSONArray jsonArray = new JSONArray(jsonData.toString());
         if (jsonArray.isEmpty()) {
-            logger.log(Level.WARNING, "Error in formatting such that JSONArray could not be" +
-                    "created successfully");
-            result = new CommandResult(Collections.singletonList("Empty Internships"), true);
+            logger.log(Level.WARNING, "Error in formatting such that JSONArray could not be created successfully");
+            result = errorReadingFile();
             return result;
         }
-        assert !jsonArray.isEmpty(): "Array of JSON objects read from file should not be an empty at this point";
-        logger.log(Level.INFO, "Successfully extracted internships as JSON objects from file");
+        List<String> feedback = new ArrayList<>();
+        boolean hasCorruption = false;
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject internshipJson = jsonArray.getJSONObject(i);
-            addInternshipToList(internships, internshipJson);
+            try {
+                addInternshipToList(internships, internshipJson);
+            } catch (JSONException e) {
+                logger.log(Level.WARNING, "Skipping corrupted entry: " + e.getMessage());
+                hasCorruption = true;
+                feedback.add("Error at JSON entry index: " + (i + 1));
+                feedback.add("Faulty entry: " + internshipJson.toString(4));
+            }
+        }
+
+        if (hasCorruption) {
+            feedback.add(0, CORRUPTED_FILE);
+            feedback.add("Please fix or delete the file at: " + file.getAbsolutePath());
+            result = new CommandResult(feedback);
+            result.setSuccessful(false);
+            return result;
         }
         logger.log(Level.INFO, "Successfully added internships from file to internship list in app");
         result = new CommandResult(LOADING_DATA_SUCCESS);

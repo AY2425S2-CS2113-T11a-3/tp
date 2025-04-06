@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import static seedu.internsprint.util.InternSprintExceptionMessages.FILE_ALREADY_EXISTS;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_DIRECTORY;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_CREATE_FILE;
+import static seedu.internsprint.util.InternSprintExceptionMessages.CORRUPTED_INTERVIEW_FILE;
 import static seedu.internsprint.util.InternSprintExceptionMessages.UNABLE_TO_READ_FILE;
 import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_SUCCESS;
 import static seedu.internsprint.util.InternSprintMessages.LOADING_DATA_FIRST_TIME;
@@ -107,8 +108,6 @@ public class InterviewStorageHandler implements Storage<InternshipList> {
             result.setSuccessful(true);
             return result;
         }
-        assert file.length() != 0 : "File should not be an empty file at this point";
-
         StringBuilder jsonData = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -116,11 +115,9 @@ public class InterviewStorageHandler implements Storage<InternshipList> {
                 jsonData.append(line);
             }
         } catch (IOException e) {
-            result = errorReadingFile();
             logger.log(Level.SEVERE, "Error reading file");
-            return result;
+            return  errorReadingFile();
         }
-
         JSONArray jsonArray = new JSONArray(jsonData.toString());
         if (jsonArray.isEmpty() && jsonData.length() != 2) {
             logger.log(Level.WARNING, "Error in formatting such that JSONArray could not be" +
@@ -132,10 +129,27 @@ public class InterviewStorageHandler implements Storage<InternshipList> {
             "Array of JSON objects read from file should not be empty at this point";
         logger.log(Level.INFO, "Successfully extracted interviews as JSON objects from file");
 
+        List<String> feedback = new ArrayList<>();
+        boolean hasCorruption = false;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject interviewJson = jsonArray.getJSONObject(i);
-            addInterviewToList(internships, interviewJson);
+            try {
+                addInterviewToList(internships, interviewJson);
+            } catch (RuntimeException e) {
+                logger.log(Level.WARNING, "Skipping corrupted entry: " + e.getMessage());
+                hasCorruption = true;
+                feedback.add("Error at JSON entry index: " + (i + 1));
+                feedback.add("Faulty entry: " + interviewJson.toString(4));
+            }
         }
+        if (hasCorruption) {
+            feedback.add(0, CORRUPTED_INTERVIEW_FILE);
+            feedback.add("Please fix or delete the file at: " + file.getAbsolutePath());
+            result = new CommandResult(feedback);
+            result.setSuccessful(false);
+            return result;
+        }
+
         logger.log(Level.INFO, "Successfully added interviews from file to interview list in app");
         result = new CommandResult(LOADING_DATA_SUCCESS);
         result.setSuccessful(true);
